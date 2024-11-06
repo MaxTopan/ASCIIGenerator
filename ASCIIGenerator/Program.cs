@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Text;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -24,8 +23,6 @@ int targetWidth = 350;
 int targetHeight = Convert.ToInt32(targetWidth * ratio);
 image.Mutate(x => x.Resize(targetWidth, targetHeight));
 
-//int[] totals = [0, 0, 0, 0, 0, 0, 0];
-
 StringBuilder result = new StringBuilder();
 
 image.ProcessPixelRows(accessor =>
@@ -33,7 +30,7 @@ image.ProcessPixelRows(accessor =>
     // loop through each row of pixels in the image
     for (int y = 0; y < accessor.Height; y++)
     {
-        Span<Rgba32> pixelRow = accessor.GetRowSpan(y); // SixLabors says this is faster than using the accessor directly throughout ¯\_(ツ)_/¯
+        Span<Rgba32> pixelRow = accessor.GetRowSpan(y); // SixLabors says this is faster than using the accessor directly throughout ¯\_(ツ)_/¯ 
 
         for (int x = 0; x < pixelRow.Length; x++)
         {
@@ -44,11 +41,6 @@ image.ProcessPixelRows(accessor =>
             double normalisedGreyscale = greyscaleVal / 255;
             int convertedVal = Convert.ToInt32(Math.Ceiling(normalisedGreyscale * palette.Length - 1));
 
-            /* LOGGING PIXEL VALUES */
-            // totals[convertedVal]++;
-            // Console.WriteLine($"R: {pixel.R}, G: {pixel.G}, B: {pixel.B}");
-            // Console.WriteLine($"greyscale: {greyscaleVal}, Converted: {convertedVal}");
-
             char pixelChar = palette[convertedVal];
 
             result.Append(pixelChar);
@@ -56,13 +48,6 @@ image.ProcessPixelRows(accessor =>
         }
         result.AppendLine();
     }
-
-    // for (int i = 0; i < totals.Length; i++) 
-    // {
-    //     Console.Write($"{i}: {totals[i]}, ");
-    // }
-    
-    //Console.WriteLine(result.ToString());
     
     if (outToFile)
     {
